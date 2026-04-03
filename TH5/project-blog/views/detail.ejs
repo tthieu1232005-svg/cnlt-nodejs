@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title><%= post.title %></title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="container" style="margin-top: 50px;">
+        <article class="post-detail">
+            <h1><%= post.title %></h1>
+            <p style="color: #666; font-size: 0.9rem;">👁️ Lượt xem: <%= post.views %></p>
+            <p><%= post.body %></p>
+            
+            <hr style="margin: 30px 0;">
+
+            <h3>Bình luận (<%= post.comments.length %>)</h3>
+            
+            <div class="comment-list" style="margin-top: 20px;">
+                <% post.comments.forEach(comment => { %>
+                    <div style="background: #f9f9f9; padding: 10px; border-radius: 5px; margin-bottom: 10px; border-left: 4px solid #4a90e2;">
+                        <strong><%= comment.username %></strong> 
+                        <small style="color: #999;">- <%= comment.createdAt.toLocaleDateString() %></small>
+                        <p style="margin-top: 5px;"><%= comment.content %></p>
+                    </div>
+                <% }) %>
+            </div>
+
+            <div style="margin-top: 30px; background: #eee; padding: 20px; border-radius: 8px;">
+                <h4>Để lại bình luận:</h4>
+                <form action="/blogposts/<%= post._id %>/comment" method="POST">
+                    <div class="form-group">
+                        <input type="text" name="username" placeholder="Tên của bạn" required style="margin-bottom: 10px;">
+                        <textarea name="content" rows="3" placeholder="Nội dung bình luận..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Gửi bình luận</button>
+                </form>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <a href="/" class="btn btn-primary">← Quay lại trang chủ</a>
+            </div>
+        </article>
+    </div>
+</body>
+</html>

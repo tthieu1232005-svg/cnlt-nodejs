@@ -1,0 +1,167 @@
+:root {
+    --primary-color: #4a90e2;    /* Xanh thanh lịch */
+    --secondary-color: #f39c12;  /* Cam cho nút Sửa */
+    --danger-color: #e74c3c;     /* Đỏ cho nút Xóa */
+    --success-color: #2ecc71;    /* Xanh lá cho nút Lưu */
+    --bg-color: #f0f2f5;
+    --text-color: #2d3436;
+    --card-bg: #ffffff;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    padding-bottom: 50px;
+}
+
+/* Container dùng chung */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header & Navbar */
+header {
+    background-color: var(--card-bg);
+    padding: 15px 0;
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+h1 {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+}
+
+/* Nút bấm chung */
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: none;
+    font-size: 0.9rem;
+}
+
+.btn-primary { background-color: var(--primary-color); color: white; }
+.btn-success { background-color: var(--success-color); color: white; }
+.btn-edit { background-color: var(--secondary-color); color: white; }
+.btn-delete { background-color: var(--danger-color); color: white; }
+
+.btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Danh sách bài viết dạng Card */
+.post-list {
+    list-style: none;
+}
+
+.post-card {
+    background: var(--card-bg);
+    padding: 25px;
+    margin-bottom: 20px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s;
+}
+
+.post-card:hover {
+    transform: scale(1.01);
+}
+
+.post-card h2 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.post-card p {
+    color: #636e72;
+    margin-bottom: 20px;
+    /* Giới hạn nội dung hiển thị 3 dòng */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.post-actions {
+    display: flex;
+    gap: 10px;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+/* Form Styling */
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+input[type="text"], textarea {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input:focus, textarea:focus {
+    border-color: var(--primary-color);
+}
+
+/* Trang chi tiết */
+.post-detail {
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.post-detail h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+.comment-list div {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.comment-list strong {
+    color: var(--primary-color);
+}
+
+textarea {
+    resize: none;
+}

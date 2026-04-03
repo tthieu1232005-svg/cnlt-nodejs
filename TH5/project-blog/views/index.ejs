@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Blog của Ngân</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>My Blog</h1>
+            <a href="/blogposts/new" class="btn btn-primary">+ Viết bài mới</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <ul class="post-list">
+            <% posts.forEach(post => { %>
+                <li class="post-card">
+                    <h2><%= post.title %></h2>
+                    <p><%= post.body %></p>
+                    <div class="post-actions">
+                        <a href="/blogposts/<%= post._id %>" class="btn btn-primary">Đọc tiếp</a>
+                        <a href="/blogposts/edit/<%= post._id %>" class="btn btn-edit">Sửa</a>
+                        <a href="/blogposts/delete/<%= post._id %>" class="btn btn-delete" onclick="return confirm('Xóa bài này nhé Ngân?')">Xóa</a>
+                    </div>
+                </li>
+            <% }) %>
+        </ul>
+    </div>
+</body>
+</html>
