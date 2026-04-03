@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Blog của Ngân</title>
+    <title>Blog tin tức</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -22,7 +22,7 @@
                     <div class="post-actions">
                         <a href="/blogposts/<%= post._id %>" class="btn btn-primary">Đọc tiếp</a>
                         <a href="/blogposts/edit/<%= post._id %>" class="btn btn-edit">Sửa</a>
-                        <a href="/blogposts/delete/<%= post._id %>" class="btn btn-delete" onclick="return confirm('Xóa bài này nhé Ngân?')">Xóa</a>
+                        <a href="/blogposts/delete/<%= post._id %>" class="btn btn-delete" onclick="return confirm('Bạn có chắc chắn muốn xóa?')">Xóa</a>
                     </div>
                 </li>
             <% }) %>
