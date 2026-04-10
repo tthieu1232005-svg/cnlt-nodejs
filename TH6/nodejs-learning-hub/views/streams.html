@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viết Nhật Ký - Streams</title>
+    <style>
+        :root { --primary: #2c3e50; --secondary: #34495e; --accent: #1abc9c; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg); margin: 0; color: #333; }
+        header { background: var(--primary); color: white; padding: 1.5rem; text-align: center; }
+        nav { background: var(--secondary); padding: 0.8rem; text-align: center; }
+        nav a { color: white; text-decoration: none; margin: 0 15px; font-weight: 500; }
+        nav a:hover { color: var(--accent); }
+        .container { max-width: 600px; margin: 30px auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        h2 { border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"], textarea, input[type="file"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        button { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 16px; width: 100%; }
+        button:hover { background: #16a085; }
+        #status { margin-top: 15px; text-align: center; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>✍️ Góc Lưu Trữ</h1>
+        <p>Phần 4.2: Ứng dụng Writable Stream</p>
+    </header>
+    
+    <nav>
+        <a href="/">🏠 Trang Chủ</a>
+        <a href="/streams">✍️ Viết Nhật Ký</a>
+        <a href="/events">🔔 Xem file Log</a>
+    </nav>
+
+    <div class="container">
+        <h2>Thêm Nhật Ký Mới</h2>
+        <form id="diaryForm">
+            <div class="form-group">
+                <label>Tiêu đề bài học:</label>
+                <input type="text" id="title" required placeholder="VD: Hôm nay học Stream...">
+            </div>
+            <div class="form-group">
+                <label>Nội dung:</label>
+                <textarea id="content" rows="5" required placeholder="Ghi chú lại những gì bạn tâm đắc..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>Đính kèm hình ảnh (1 tấm minh họa):</label>
+                <input type="file" id="imageFile" accept="image/*" required>
+            </div>
+            <button type="submit">Lưu Nhật Ký Bằng Stream</button>
+        </form>
+        <div id="status"></div>
+    </div>
+
+    <script>
+        document.getElementById('diaryForm').addEventListener('submit', async (e) => {
+            e.preventDefault(); // Ngăn trình duyệt reload
+            
+            const title = document.getElementById('title').value;
+            const content = document.getElementById('content').value;
+            const fileInput = document.getElementById('imageFile');
+            const statusDiv = document.getElementById('status');
+
+            if (fileInput.files.length === 0) return alert("Vui lòng chọn ảnh!");
+
+            const file = fileInput.files[0];
+            const ext = file.name.split('.').pop(); // Lấy đuôi file (jpg, png...)
+
+            statusDiv.style.color = 'blue';
+            statusDiv.innerText = 'Đang xử lý dữ liệu...';
+
+            // Đọc file ảnh dưới dạng Base64
+            const reader = new FileReader();
+            reader.onloadend = async () => {
+                const base64String = reader.result.split(',')[1]; // Bỏ phần header "data:image/jpeg;base64,"
+
+                // Gửi JSON lên Server
+                const payload = { title, content, imageBase64: base64String, ext };
+
+                try {
+                    const response = await fetch('/streams', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (response.ok) {
+                        statusDiv.style.color = 'green';
+                        statusDiv.innerText = '✅ Lưu nhật ký thành công! Hãy về Trang Chủ để xem.';
+                        document.getElementById('diaryForm').reset();
+                    } else {
+                        throw new Error('Lỗi từ server');
+                    }
+                } catch (error) {
+                    statusDiv.style.color = 'red';
+                    statusDiv.innerText = '❌ Có lỗi xảy ra khi lưu nhật ký.';
+                }
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nhật Ký Học Tập - Trang Chủ</title>
+    <style>
+        :root { --primary: #2c3e50; --secondary: #34495e; --accent: #1abc9c; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: var(--bg); margin: 0; color: #333; }
+        header { background: var(--primary); color: white; padding: 1.5rem; text-align: center; }
+        nav { background: var(--secondary); padding: 0.8rem; text-align: center; }
+        nav a { color: white; text-decoration: none; margin: 0 15px; font-weight: 500; transition: color 0.3s; }
+        nav a:hover { color: var(--accent); }
+        .container { max-width: 800px; margin: 30px auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        h2 { border-bottom: 2px solid var(--accent); padding-bottom: 10px; display: inline-block; margin-top: 0;}
+        
+        /* Chỉnh lại CSS cho 3 nút tính năng */
+        .app-features { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        .btn { padding: 8px 15px; border-radius: 5px; text-decoration: none; color: white; font-size: 14px; transition: 0.2s; background: var(--secondary); }
+        .btn:hover { background: var(--primary); transform: translateY(-2px); }
+
+        .diary-entry { border: 1px solid #eaeaea; border-radius: 8px; padding: 15px; margin-bottom: 20px; transition: 0.2s; }
+        .diary-entry:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .diary-entry h3 { color: var(--primary); margin: 0 0 10px 0; }
+        .diary-entry .meta { font-size: 0.85rem; color: #7f8c8d; margin-bottom: 15px; }
+        .diary-entry p { line-height: 1.6; }
+        .diary-images { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 15px; }
+        .diary-images img { max-width: 150px; height: auto; border-radius: 6px; border: 1px solid #ddd; object-fit: cover; }
+        .empty-msg { text-align: center; color: #95a5a6; font-style: italic; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>📚 My Learning Hub</h1>
+        <p>Hành trình chinh phục NodeJS</p>
+    </header>
+    
+    <nav>
+        <a href="/">🏠 Trang Chủ</a>
+        <a href="/streams">✍️ Viết Nhật Ký</a>
+        <a href="/events">🔔 Xem file Log</a>
+    </nav>
+
+    <div class="container">
+        <div class="app-features">
+            <a href="/request?monhoc=CNLTUD&nam=3" class="btn">🔍 Cấu Hình Hệ Thống</a>
+            <a href="/transform" target="_blank" class="btn">🕵️ Upper file Log</a>
+            <a href="/download-log" class="btn">⬇️ Tải file Log</a>
+        </div>
+
+        <h2>Nhật ký gần đây</h2>
+        <div id="diary-list">
+            <p class="empty-msg">Đang tải dữ liệu...</p>
+        </div>
+    </div>
+
+    <script>
+        fetch('/json').then(res => res.json()).then(diaries => {
+            const list = document.getElementById('diary-list');
+            if (diaries.length === 0) return list.innerHTML = '<p class="empty-msg">Chưa có bài nhật ký nào!</p>';
+            list.innerHTML = diaries.reverse().map(diary => `
+                <div class="diary-entry">
+                    <h3>${diary.title}</h3>
+                    <div class="meta">📅 ${diary.date} | 🆔 ${diary.id}</div>
+                    <p>${diary.content}</p>
+                    <div class="diary-images">${diary.images.map(img => `<img src="/image?name=${img}">`).join('')}</div>
+                </div>
+            `).join('');
+        });
+    </script>
+</body>
+</html>

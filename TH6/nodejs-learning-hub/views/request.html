@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông Tin Trình Duyệt</title>
+    <style>
+        :root { --primary: #2c3e50; --secondary: #34495e; --accent: #1abc9c; --bg: #f4f7f6; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: var(--bg); margin: 0; color: #333; }
+        header { background: var(--primary); color: white; padding: 1.5rem; text-align: center; }
+        nav { background: var(--secondary); padding: 0.8rem; text-align: center; }
+        nav a { color: white; text-decoration: none; margin: 0 15px; font-weight: 500; }
+        nav a:hover { color: var(--accent); }
+        .container { max-width: 800px; margin: 30px auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        h2 { border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+        pre { background: #2c3e50; color: #ecf0f1; padding: 15px; border-radius: 5px; overflow-x: auto; font-size: 14px; }
+        .info-box { background: #e8f8f5; border-left: 4px solid var(--accent); padding: 10px 15px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🔍 Thông Tin Bếp Nút</h1>
+        <p>Phần 3: HTTP Request & Headers</p>
+    </header>
+    
+   <nav>
+        <a href="/">🏠 Trang Chủ</a>
+        <a href="/streams">✍️ Viết Nhật Ký</a>
+        <a href="/events">🔔 Xem file Log</a>
+    </nav>
+
+    <div class="container">
+        <h2>Phân tích Request gửi từ máy bạn</h2>
+        <div id="req-info">
+            <p style="text-align: center; color: #7f8c8d;">Đang soi dữ liệu...</p>
+        </div>
+    </div>
+
+    <script>
+        // Gọi API với query param "?monhoc=CNLTUD&nam=3" để test URL parsing
+        fetch('/api/request-info' + window.location.search)
+            .then(res => res.json())
+            .then(data => {
+                document.getElementById('req-info').innerHTML = `
+                    <div class="info-box">
+                        <p><strong>Phương thức (Method):</strong> ${data.method}</p>
+                        <p><strong>Đường dẫn (URL):</strong> ${data.url}</p>
+                        <p><strong>Tham số URL (Query):</strong> ${JSON.stringify(data.query)}</p>
+                    </div>
+                    
+                    <h3>📌 Request Headers (Trình duyệt gửi lên):</h3>
+                    <pre>${JSON.stringify(data.headers, null, 4)}</pre>
+                    
+                    <h3>📌 Response Headers (Server trả về):</h3>
+                    <pre>${JSON.stringify(data.resHeaders, null, 4)}</pre>
+                `;
+            });
+    </script>
+</body>
+</html>
