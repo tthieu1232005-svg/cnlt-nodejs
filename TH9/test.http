@@ -1,0 +1,33 @@
+### 1. ĐĂNG NHẬP (Phần 1)
+POST http://localhost:3000/login
+Content-Type: application/json
+
+
+{
+    "username": "admin",
+    "password": "123456"
+}
+
+
+### 2. LẤY DANH SÁCH SINH VIÊN (Phần 2)
+GET http://localhost:3000/students?page=1&limit=2
+
+
+### 3. THỐNG KÊ (Phần 5)
+GET http://localhost:3000/students/stats
+
+
+### 4. THỐNG KÊ THEO LỚP (Phần 5.2)
+GET http://localhost:3000/students/stats/class
+
+
+### 5. TEST ĐỒNG BỘ (Sync)
+GET http://localhost:3000/heavy-sync
+
+
+### 6. TEST BẤT ĐỒNG BỘ (Async)
+GET http://localhost:3000/heavy-async
+
+
+### 7. ĐĂNG XUẤT
+POST http://localhost:3000/logout
