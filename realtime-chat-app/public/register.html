@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký - Chat App</title>
+    <style>
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f0f2f5; margin: 0; }
+        .auth-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 300px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background: #0084ff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #006bce; }
+        .link { text-align: center; margin-top: 10px; display: block; text-decoration: none; color: #0084ff; }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <h2 style="text-align: center;">Đăng Ký</h2>
+        <form id="registerForm">
+            <input type="text" id="regPhone" placeholder="Số điện thoại" required>
+            <input type="text" id="regName" placeholder="Tên hiển thị" required>
+            <input type="password" id="regPassword" placeholder="Mật khẩu" required>
+            <button type="submit">Tạo tài khoản</button>
+        </form>
+        <a href="/login.html" class="link">Đã có tài khoản? Đăng nhập</a>
+    </div>
+
+    <script src="/js/auth.js"></script>
+</body>
+</html>

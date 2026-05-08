@@ -1,0 +1,162 @@
+/* =========================================
+   1. VARIABLES & RESET
+========================================= */
+:root {
+    --primary-color: #0084ff;
+    --primary-hover: #006bce;
+    --bg-app: #f0f2f5;
+    --bg-panel: #ffffff;
+    --bg-hover: #f5f6f8;
+    --text-main: #050505;
+    --text-muted: #65676b;
+    --border-color: #e4e6eb;
+    
+    /* Message Colors */
+    --msg-sent-bg: #0084ff;
+    --msg-sent-text: #ffffff;
+    --msg-recv-bg: #e4e6eb;
+    --msg-recv-text: #050505;
+}
+
+body.dark-mode {
+    --primary-color: #2d88ff;
+    --bg-app: #18191a;
+    --bg-panel: #242526;
+    --bg-hover: #3a3b3c;
+    --text-main: #e4e6eb;
+    --text-muted: #b0b3b8;
+    --border-color: #3e4042;
+    
+    --msg-recv-bg: #3e4042;
+    --msg-recv-text: #e4e6eb;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+body { background: var(--bg-app); color: var(--text-main); transition: background 0.3s, color 0.3s; overflow: hidden; }
+
+/* =========================================
+   2. LAYOUT CHÍNH
+========================================= */
+.app-container { display: flex; width: 100vw; height: 100vh; }
+
+/* =========================================
+   3. SIDEBAR (DANH SÁCH BẠN BÈ)
+========================================= */
+.sidebar { width: 350px; background: var(--bg-panel); border-right: 1px solid var(--border-color); display: flex; flex-direction: column; transition: 0.3s; }
+.user-info { padding: 20px; border-bottom: 1px solid var(--border-color); display: flex; flex-direction: column; align-items: center; }
+
+.avatar-wrapper { position: relative; margin-bottom: 15px; }
+#my-avatar { width: 70px; height: 70px; border-radius: 50%; object-fit: cover; border: 3px solid var(--primary-color); cursor: pointer; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+#my-avatar:hover { filter: brightness(0.9); transform: scale(1.05); }
+
+.header-top { width: 100%; display: flex; justify-content: center; align-items: center; position: relative; margin-bottom: 10px; }
+#current-username { font-size: 1.2rem; font-weight: 600; }
+#theme-toggle { position: absolute; right: 0; background: none; border: none; font-size: 20px; cursor: pointer; transition: 0.3s; }
+#theme-toggle:hover { transform: rotate(20deg) scale(1.1); }
+
+.logout-btn { padding: 8px 20px; background: #e4e6eb; color: #050505; border: none; border-radius: 20px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+.logout-btn:hover { background: #d8dadf; }
+body.dark-mode .logout-btn { background: #3a3b3c; color: #e4e6eb; }
+
+.search-box { padding: 15px; display: flex; gap: 10px; border-bottom: 1px solid var(--border-color); }
+.search-box input { flex: 1; padding: 10px 15px; border: none; background: var(--bg-app); border-radius: 20px; color: var(--text-main); outline: none; }
+.search-box button { padding: 10px 20px; background: var(--primary-color); color: white; border: none; border-radius: 20px; cursor: pointer; font-weight: bold; }
+
+#user-list { list-style: none; overflow-y: auto; flex: 1; }
+.user-item { padding: 15px 20px; cursor: pointer; transition: 0.2s; border-left: 4px solid transparent; }
+.user-item:hover { background: var(--bg-hover); }
+.user-item.active { background: var(--bg-hover); border-left: 4px solid var(--primary-color); }
+
+.user-item-info { display: flex; align-items: center; gap: 12px; width: 100%; }
+.friend-avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; }
+.user-text { flex: 1; min-width: 0; }
+.user-name-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.user-name-row strong { font-size: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.last-msg { font-size: 0.85rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Status Dot */
+.status-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; border: 2px solid var(--bg-panel); }
+.online { background-color: #31a24c; }
+.offline { background-color: #adb5bd; }
+
+/* =========================================
+   4. CHAT AREA (KHU VỰC NHẮN TIN)
+========================================= */
+.chat-area { flex: 1; display: flex; flex-direction: column; background: var(--bg-panel); transition: 0.3s; }
+#chat-header { padding: 20px; font-weight: 600; font-size: 1.2rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.02); z-index: 10; }
+#chat-actions button { background: var(--bg-app); border: none; font-size: 16px; cursor: pointer; margin-left: 10px; width: 36px; height: 36px; border-radius: 50%; transition: 0.2s; }
+#chat-actions button:hover { background: #d8dadf; }
+
+#message-container { flex: 1; padding: 20px 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; background: var(--bg-app); }
+
+/* =========================================
+   5. MESSAGE BUBBLES & REACTIONS
+========================================= */
+.message-wrapper { position: relative; display: flex; flex-direction: column; width: 100%; margin-bottom: 10px; }
+.message { max-width: 65%; padding: 12px 16px; font-size: 0.95rem; line-height: 1.4; word-wrap: break-word; position: relative; box-shadow: 0 1px 2px rgba(0,0,0,0.1); display: flex; flex-direction: column; }
+
+.message.sent { align-self: flex-end; background: var(--msg-sent-bg); color: var(--msg-sent-text); border-radius: 20px 20px 4px 20px; }
+.message.received { align-self: flex-start; background: var(--msg-recv-bg); color: var(--msg-recv-text); border-radius: 20px 20px 20px 4px; }
+.message-content { display: block; }
+
+.message .time { font-size: 0.7rem; opacity: 0.7; margin-top: 5px; align-self: flex-end; }
+.status-icon { font-size: 0.75rem; margin-left: 8px; font-weight: bold; color: #d1d1d1; align-self: flex-end; margin-top: 2px; }
+.status-icon.read { color: #fff; opacity: 0.9; }
+
+/* File link styling */
+.message a { color: inherit; text-decoration: underline; font-weight: bold; }
+
+/* Reaction Bar */
+.reaction-bar { position: absolute; bottom: -12px; background: var(--bg-panel); color: var(--text-main); border-radius: 12px; padding: 2px 6px; box-shadow: 0 2px 5px rgba(0,0,0,0.15); font-size: 14px; display: flex; gap: 2px; z-index: 5; border: 1px solid var(--border-color); }
+.reaction-bar:empty { display: none; }
+.sent .reaction-bar { left: 10px; }
+.received .reaction-bar { right: 10px; }
+
+/* Reaction Picker (Tooltip) */
+.reaction-picker { display: none; position: absolute; top: -45px; background: var(--bg-panel); border-radius: 30px; padding: 8px 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 20; border: 1px solid var(--border-color); }
+.reaction-picker::after { content: ''; position: absolute; bottom: -15px; left: 0; width: 100%; height: 15px; }
+.message-wrapper:hover .reaction-picker { display: flex; gap: 10px; cursor: pointer; animation: popUp 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28); }
+.sent .reaction-picker { right: 0; }
+.received .reaction-picker { left: 0; }
+.reaction-picker span { font-size: 20px; transition: 0.2s; }
+.reaction-picker span:hover { transform: scale(1.4) translateY(-2px); }
+
+@keyframes popUp { 0% { transform: scale(0.5); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+
+/* =========================================
+   6. INPUT AREA & STICKERS
+========================================= */
+#typing-status { padding: 0 30px 10px; font-style: italic; font-size: 0.85rem; color: var(--text-muted); height: 25px; background: var(--bg-app); }
+
+.input-area { padding: 15px 20px; background: var(--bg-panel); border-top: 1px solid var(--border-color); display: flex; gap: 12px; align-items: center; position: relative; }
+.input-area label, #sticker-btn { background: none; border: none; font-size: 24px; cursor: pointer; color: var(--text-muted); transition: 0.2s; padding: 5px; }
+.input-area label:hover, #sticker-btn:hover { color: var(--primary-color); transform: scale(1.1); }
+
+#msg-input { flex: 1; padding: 12px 20px; border: none; background: var(--bg-app); border-radius: 25px; outline: none; font-size: 1rem; color: var(--text-main); transition: 0.2s; }
+#msg-input:focus { box-shadow: 0 0 0 2px var(--primary-color) inset; }
+
+#send-btn { background: var(--primary-color); color: white; border: none; border-radius: 50%; width: 45px; height: 45px; font-weight: bold; cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; }
+#send-btn:hover:not(:disabled) { background: var(--primary-hover); transform: scale(1.05); }
+#send-btn:disabled { background: var(--text-muted); cursor: not-allowed; opacity: 0.5; }
+
+/* Sticker Panel */
+#sticker-panel { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; background: var(--bg-panel); border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; position: absolute; bottom: 80px; left: 60px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); z-index: 100; max-height: 250px; overflow-y: auto; width: 280px; }
+.sticker-img { width: 100%; cursor: pointer; transition: 0.2s; border-radius: 8px; }
+.sticker-img:hover { transform: scale(1.15); background: var(--bg-hover); }
+
+/* =========================================
+   7. UTILITIES & CONTEXT MENU
+========================================= */
+.hidden { display: none !important; }
+
+#context-menu { position: fixed; background: var(--bg-panel); border: 1px solid var(--border-color); box-shadow: 0 5px 15px rgba(0,0,0,0.2); z-index: 1000; width: 180px; border-radius: 8px; overflow: hidden; }
+#context-menu ul { list-style: none; }
+#context-menu li { padding: 12px 16px; cursor: pointer; color: var(--text-main); font-size: 0.95rem; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
+#context-menu li:hover { background: var(--bg-hover); color: var(--primary-color); }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #bcc0c4; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #8a8d91; }
+body.dark-mode ::-webkit-scrollbar-thumb { background: #4e4f50; }

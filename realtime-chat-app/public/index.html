@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Realtime Pro</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="user-info">
+                <div class="avatar-wrapper">
+                    <img id="my-avatar" src="" alt="Avatar" onclick="document.getElementById('avatar-input').click()">
+                    <input type="file" id="avatar-input" accept="image/*" class="hidden">
+                </div>
+                
+                <div class="header-top" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 10px;">
+                    <h3 id="current-username">...</h3>
+                    <button id="theme-toggle" title="Đổi màu nền" style="background: none; border: none; font-size: 20px; cursor: pointer;">🌙</button>
+                </div>
+                
+                <button class="logout-btn" onclick="logout()">Đăng xuất</button>
+            </div>
+            
+            <div class="search-box">
+                <input type="text" id="searchPhone" placeholder="Tìm bạn bằng SĐT...">
+                <button onclick="searchUser()">Tìm</button>
+            </div>
+            <ul id="user-list"></ul>
+        </div>
+
+        <div class="chat-area">
+            <div id="chat-header">
+                <span id="chat-partner-name">Chọn một người để chat</span>
+                <div id="chat-actions" class="hidden">
+                    <button id="pin-btn" onclick="toggleAction('pin')" title="Ghim/Bỏ ghim">📌</button>
+                    <button id="block-btn" onclick="toggleAction('block')" title="Chặn/Bỏ chặn">🚫</button>
+                </div>
+            </div>
+            
+            <div id="message-container"></div>
+            <div id="typing-status"></div>
+            
+            <div class="input-area">
+                <label for="file-input" style="cursor: pointer; font-size: 22px; margin-right: 10px;" title="Đính kèm file">📎</label>
+                <input type="file" id="file-input" class="hidden">
+                
+                <button id="sticker-btn" title="Gửi Sticker">😊</button>
+                <div id="sticker-panel" class="hidden"></div>
+                
+                <input type="text" id="msg-input" placeholder="Nhập tin nhắn..." disabled>
+                <button id="send-btn" disabled>Gửi</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="context-menu" class="hidden">
+        <ul>
+            <li id="menu-edit">Chỉnh sửa</li>
+            <li id="menu-unsend">Thu hồi</li>
+            <li id="menu-delete">Xóa (phía mình)</li>
+        </ul>
+    </div>
+
+    <script src="/js/chat.js"></script>
+</body>
+</html>
