@@ -100,14 +100,67 @@ async function toggleAction(action) {
     loadRecentChats();
 }
 
+// --- SỬA LẠI HÀM TÌM KIẾM BẠN BÈ ---
 async function searchUser() {
     const phone = document.getElementById('searchPhone').value;
+    if (!phone) return alert("Vui lòng nhập số điện thoại để tìm kiếm!");
+
     try {
         const res = await fetch(`/api/users/search/${phone}`);
         const user = await res.json();
-        if (res.ok) { selectUser(user._id, user.name); loadRecentChats(); } 
-        else alert("Không tìm thấy!");
-    } catch (e) {}
+
+        if (res.ok) {
+            // 1. Kiểm tra xem người này đã có mặt trên thanh sidebar chưa
+            let existingLi = document.getElementById(`user-${user._id}`);
+
+            if (!existingLi) {
+                // 2. Nếu CHƯA CÓ: Tạo một thẻ mới và chèn lên đầu danh sách (Sidebar)
+                const userList = document.getElementById('user-list');
+                const li = document.createElement('li');
+                li.className = 'user-item';
+                li.id = `user-${user._id}`;
+                li.onclick = () => selectUser(user._id, user.name); // Chỉ mở chat khi click
+                
+                let avatarSrc = user.avatar || 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+
+                li.innerHTML = `
+                    <div class="user-item-info">
+                        <img src="${avatarSrc}" class="friend-avatar">
+                        <div class="user-text">
+                            <div class="user-name-row">
+                                <strong>${user.name}</strong>
+                                <span class="status-dot offline" id="dot-${user._id}"></span>
+                            </div>
+                            <div class="last-msg">Người liên hệ mới...</div>
+                        </div>
+                    </div>
+                `;
+                
+                // prepend() giúp đẩy người dùng mới này lên vị trí trên cùng của danh sách
+                userList.prepend(li); 
+                
+                // Cập nhật dấu chấm xanh nếu họ đang online
+                socket.emit('get-online-status'); 
+            } else {
+                // 3. Nếu ĐÃ CÓ: Tự động cuộn danh sách tới vị trí người đó để bạn dễ thấy
+                existingLi.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // Hiệu ứng nhấp nháy nền nhẹ để gây chú ý
+                existingLi.style.backgroundColor = 'var(--bg-hover)';
+                setTimeout(() => {
+                    existingLi.style.backgroundColor = '';
+                }, 1000);
+            }
+            
+            // Xóa trắng ô nhập liệu sau khi tìm thành công cho gọn gàng
+            document.getElementById('searchPhone').value = '';
+
+        } else {
+            alert("Không tìm thấy số điện thoại này trong hệ thống!");
+        }
+    } catch (e) {
+        console.error("Lỗi tìm kiếm:", e);
+    }
 }
 
 async function selectUser(id, name) {
